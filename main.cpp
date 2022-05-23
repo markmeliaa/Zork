@@ -14,6 +14,7 @@ int main()
 	char typed;
 	string player_input;
 	vector<string> args;
+	args.reserve(5);
 
 	cout << BOLDYELLOW_ "WELCOME to Marc's personal ZORK!" ENDCOLORING << endl;
 
@@ -44,7 +45,30 @@ int main()
 			else
 			{
 				Split(player_input, args);
+
+				/*
+				for each (string var in args) 
+				{
+					cout << "\n";
+					cout << var;
+				}
+				cout << "\n";
+				*/
 			}
 		}
+
+		if (args.size() > 0 && args[0] == "quit")
+			break;
+
+		if ()
+
+		if (args.size() > 0)
+		{
+			player_input = "";
+			args.clear();
+		}
 	}
+
+	cout << "\nThank you for playing, see you again!\n";
+	return 0;
 }

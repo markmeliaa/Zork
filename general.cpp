@@ -12,9 +12,7 @@ void Split(const string& input, vector<string>& divided)
 		const char* start = line;
 		
 		while (*line != ' ' && *line) 
-		{
 			line++;
-		}
 
 		divided.push_back(string(start, line));
 	} 
