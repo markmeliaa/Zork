@@ -1,29 +1,28 @@
 #include <iostream>
+#include "general.h"
 #include "entity.h"
 
-Entity::Entity(const char* name, const char* desc, Entity* thisParent = NULL) :
-	name(name), desc(desc), thisParent(thisParent)
+// ----------------------------------------------------
+Entity::Entity(const char* name, const char* desc, Entity* parent = NULL) :
+name(name), desc(desc), thisParent(parent)
 {
-	type = BASEENTITY;
+	type = EntityType::BASEENTITY;
 
-	// If this object has a parent, add it this to the parent's children
-	if (thisParent != NULL)
-		thisParent->thisChildren.push_back(this);
+	if(parent != NULL)
+		parent->thisChildren.push_back(this);
 }
 
-Entity::~Entity() 
-{
+// ----------------------------------------------------
+Entity::~Entity()
+{}
 
-}
-
+// ----------------------------------------------------
 void Entity::Look() const
 {
-	cout << "Name: " << name << "\n";
-	cout << "Description: " << desc << "\n";
+	cout << name << "\n";
+	cout << desc << "\n";
 }
 
-// Normally, an Entity does nothing on Update
+// ----------------------------------------------------
 void Entity::Update()
-{
-
-}
+{}

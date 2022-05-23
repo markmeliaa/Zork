@@ -49,6 +49,7 @@ int main()
 			else
 			{
 				Split(player_input, args);
+				cout << "\n";
 
 				/*
 				for each (string var in args) 
@@ -65,7 +66,7 @@ int main()
 			break;
 
 		if (!newWorld.Update(args))
-			cout << "\nSorry, I did not understand you, please repeat again.\n";
+			cout << "Sorry, I did not understand you, please repeat again.\n";
 
 		if (args.size() > 0)
 		{
@@ -74,6 +75,6 @@ int main()
 		}
 	}
 
-	cout << "\nThank you for playing, see you again!\n";
+	cout << "Thank you for playing, see you again!\n";
 	return 0;
 }
