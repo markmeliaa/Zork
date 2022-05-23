@@ -1,5 +1,7 @@
 #include <iostream>
 #include <conio.h>
+#include <vector>
+#include "general.h"
 
 using namespace std;
 
@@ -11,6 +13,7 @@ int main()
 {
 	char typed;
 	string player_input;
+	vector<string> args;
 
 	cout << BOLDYELLOW_ "WELCOME to Marc's personal ZORK!" ENDCOLORING << endl;
 
@@ -36,6 +39,11 @@ int main()
 			{
 				player_input += typed;
 				cout << typed;
+			}
+
+			else
+			{
+				Split(player_input, args);
 			}
 		}
 	}
