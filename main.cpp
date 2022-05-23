@@ -2,6 +2,7 @@
 #include <conio.h>
 #include <vector>
 #include "general.h"
+#include "world.h"
 
 using namespace std;
 
@@ -13,8 +14,11 @@ int main()
 {
 	char typed;
 	string player_input;
+
 	vector<string> args;
 	args.reserve(5);
+
+	World newWorld;
 
 	cout << BOLDYELLOW_ "WELCOME to Marc's personal ZORK!" ENDCOLORING << endl;
 
@@ -60,7 +64,8 @@ int main()
 		if (args.size() > 0 && args[0] == "quit")
 			break;
 
-		if ()
+		if (!newWorld.Update(args))
+			cout << "\nSorry, I did not understand you, please repeat again.\n";
 
 		if (args.size() > 0)
 		{

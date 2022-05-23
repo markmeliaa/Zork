@@ -38,4 +38,8 @@ void World::GameLoop()
 bool World::SelectCommand(vector<string>& args)
 {
 	bool command = true;
+
+
+
+	return command;
 }
