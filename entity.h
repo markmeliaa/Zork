@@ -6,11 +6,7 @@ using namespace std;
 enum EntityTypes
 {
 	BASEENTITY,
-	ROOM,
-	EXIT,
-	ITEM,
-	CREATURE,
-	PLAYER
+	ROOM
 };
 
 class Entity
@@ -22,6 +18,7 @@ public:
 	virtual void Look() const;
 	virtual void Update();
 
+private:
 	EntityTypes type;
 	string name;
 	string desc;
