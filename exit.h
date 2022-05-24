@@ -21,4 +21,4 @@ public:
 	Entity* key;
 };
 
-#endif //ExitClass
+#endif // !ExitClass

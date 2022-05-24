@@ -3,6 +3,7 @@
 #include "entity.h"
 #include "room.h"
 #include "exit.h"
+#include "item.h"
 
 World::World()
 {
@@ -40,6 +41,10 @@ World::World()
 	worldEntities.push_back(exit4);
 	worldEntities.push_back(exit5);
 	worldEntities.push_back(exit6);
+
+	// Create the key for the castle
+	Item* castleKey = new Item("Brilliant Key", "A golden key, could be used to open something important", river);
+	exit5->key = castleKey;
 }
 
 World::~World()

@@ -34,4 +34,4 @@ public :
 	list<Entity*> thisChildren;
 };
 
-#endif //EntityClass
+#endif // !EntityClass

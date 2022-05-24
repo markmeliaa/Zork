@@ -18,3 +18,16 @@ void Split(const string& input, vector<string>& divided)
 	} 
 	while (*line++ != NULL);
 }
+
+// Get a random int between a min and a max
+int Random(const int& min, const int& max)
+{
+	if (max <= 0)
+		return 0;
+
+	else if (max == min)
+		return min;
+
+	else
+		return rand() % (max - min) + min;
+}

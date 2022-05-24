@@ -27,4 +27,4 @@ private:
 	list<Entity*> worldEntities;
 };
 
-#endif //WorldClass
+#endif // !WorldClass

@@ -14,4 +14,4 @@ public:
 	void Look() const;
 };
 
-#endif //RoomClass
+#endif // !RoomClass
