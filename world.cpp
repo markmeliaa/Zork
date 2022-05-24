@@ -4,6 +4,7 @@
 #include "room.h"
 #include "exit.h"
 #include "item.h"
+#include "creature.h"
 
 World::World()
 {
@@ -42,9 +43,37 @@ World::World()
 	worldEntities.push_back(exit5);
 	worldEntities.push_back(exit6);
 
+	// Create the Creatures
+	Creature* king = new Creature("The King", "The abusive monarch of this realm", castle);
+	king->health = 15;
+	Creature* fisherman = new Creature("Fisherman", "A young guy that prevents you from fishing", lake);
+	fisherman->health = 10;
+
+	worldEntities.push_back(king);
+	worldEntities.push_back(fisherman);
+
 	// Create the key for the castle
-	Item* castleKey = new Item("Brilliant Key", "A golden key, could be used to open something important", river);
+	Item* castleKey = new Item("Brilliant Key", "A golden key, could be used to open something important", king);
 	exit5->key = castleKey;
+
+	// Create the Items
+	Item* fishingRod = new Item("Basic Fishing Rod", "A rod made for fishing small fish", fisherman, ItemType::ATTACK);
+	fishingRod->min_val = 2;
+	fishingRod->max_val = 3;
+	fisherman->AutoEquip();
+
+	Item* treeBranch = new Item("Tree Branch", "A long, sharp branch that fell from a tree", mountain, ItemType::ATTACK);
+	treeBranch->min_val = 1;
+	treeBranch->max_val = 4;
+
+	Item* royalShield = new Item("Royal Shield", "A shield with the royal family logo", king, ItemType::DEFENSE);
+	royalShield->min_val = 1;
+	royalShield->max_val = 3;
+	king->AutoEquip();
+
+	worldEntities.push_back(fishingRod);
+	worldEntities.push_back(treeBranch);
+	worldEntities.push_back(royalShield);
 }
 
 World::~World()

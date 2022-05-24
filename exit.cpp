@@ -23,9 +23,22 @@ void Exit::Look() const
 
 const string& Exit::GetNameDirection(const Room* roomObj) const
 {
-	if (roomObj == dest)
+	if (roomObj == thisParent)
+		return name;
+
+	else if (roomObj == dest)
 		return oppName;
 
-	else
-		return name;
+	return "";
+}
+
+Room* Exit::GetDestinationFromRoom(const Room* roomObj) const
+{
+	if (roomObj == thisParent)
+		return dest;
+
+	else if (roomObj == dest)
+		return (Room*)thisParent;
+
+	return NULL;
 }
