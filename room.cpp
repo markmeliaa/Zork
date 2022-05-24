@@ -1,5 +1,6 @@
 #include "room.h"
 #include <iostream>
+#include "exit.h"
 
 Room::Room(const char* name, const char* desc) :
 	Entity(name, desc, NULL)
@@ -44,4 +45,21 @@ void Room::Look() const
 
 		}
 	}
+}
+
+// Retrieve the exit/s of a certain room
+Exit* Room::GetThisExit(const string& exitName) const
+{
+	for each (Entity* object in thisChildren)
+	{
+		if (object->type == EntityType::EXIT)
+		{
+			Exit* exit = (Exit*) object;
+
+			if (exit->GetNameDirection(this) == exitName)
+				return exit;
+		}
+	}
+
+	return NULL;
 }

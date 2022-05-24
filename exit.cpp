@@ -20,3 +20,12 @@ void Exit::Look() const
 	cout << "You look from " << name << " to " << oppName << "\n";
 	cout << "You see a " << desc << "\n";
 }
+
+const string& Exit::GetNameDirection(const Room* roomObj) const
+{
+	if (roomObj == dest)
+		return oppName;
+
+	else
+		return name;
+}

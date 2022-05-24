@@ -5,6 +5,8 @@
 
 using namespace std;
 
+class Exit;
+
 class Room : public Entity
 {
 public:
@@ -12,6 +14,7 @@ public:
 	~Room();
 
 	void Look() const;
+	Exit* GetThisExit(const string& exitName) const;
 };
 
 #endif // !RoomClass

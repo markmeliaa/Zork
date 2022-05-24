@@ -24,6 +24,13 @@ public:
 
 	virtual void Look() const;
 	virtual void Update();
+	void ChangeParentObject(Entity* changeTo);
+
+	bool FindObject(Entity* object) const;
+	Entity* FindObject(EntityType type) const;
+	Entity* FindObject(const string& name, EntityType type) const;
+	void FindAllByType(EntityType type, list<Entity*>& objectContainer) const;
+	
 
 public :
 	EntityType type;

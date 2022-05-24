@@ -15,6 +15,8 @@ public:
 
 	void Look() const;
 
+	const string& GetNameDirection(const Room* roomObj) const;
+
 	bool locked;
 	string oppName;
 	Room* dest;
