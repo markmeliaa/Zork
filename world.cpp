@@ -45,36 +45,36 @@ World::World()
 	worldEntities.push_back(exit6);
 
 	// Create the Creatures
-	Creature* king = new Creature("The King", "The abusive monarch of this realm", castle);
+	Creature* king = new Creature("king", "The abusive monarch of this realm", castle);
 	king->health = 15;
-	Creature* fisherman = new Creature("Fisherman", "A young guy that prevents you from fishing", lake);
+	Creature* fisherman = new Creature("fisherman", "A young guy that prevents you from fishing", lake);
 	fisherman->health = 10;
 
 	worldEntities.push_back(king);
 	worldEntities.push_back(fisherman);
 
 	// Create the key for the castle
-	Item* castleKey = new Item("Brilliant Key", "A golden key, could be used to open something important", king);
+	Item* castleKey = new Item("key", "A golden key, could be used to open something important", bridge);
 	exit5->key = castleKey;
 
 	// Create the Items
-	Item* fishingRod = new Item("Basic Fishing Rod", "A rod made for fishing small fish", fisherman, ItemType::ATTACK);
-	fishingRod->min_val = 2;
-	fishingRod->max_val = 3;
+	Item* rod = new Item("rod", "Made for fishing small fish", fisherman, ItemType::ATTACK);
+	rod->min_val = 2;
+	rod->max_val = 3;
 	fisherman->AutoEquip();
 
-	Item* treeBranch = new Item("Tree Branch", "A long, sharp branch that fell from a tree", mountain, ItemType::ATTACK);
-	treeBranch->min_val = 1;
-	treeBranch->max_val = 4;
+	Item* branch = new Item("branch", "A long, sharp branch that fell from a tree", mountain, ItemType::ATTACK);
+	branch->min_val = 1;
+	branch->max_val = 4;
 
-	Item* royalShield = new Item("Royal Shield", "A shield with the royal family logo", king, ItemType::DEFENSE);
-	royalShield->min_val = 1;
-	royalShield->max_val = 3;
+	Item* shield = new Item("shield", "A shield with the royal family logo", king, ItemType::DEFENSE);
+	shield->min_val = 1;
+	shield->max_val = 3;
 	king->AutoEquip();
 
-	worldEntities.push_back(fishingRod);
-	worldEntities.push_back(treeBranch);
-	worldEntities.push_back(royalShield);
+	worldEntities.push_back(rod);
+	worldEntities.push_back(branch);
+	worldEntities.push_back(shield);
 
 	// Create the Player
 	mainChar = new Player("Hero", "The one chosen by the legend", mountain);
@@ -169,6 +169,9 @@ bool World::SelectCommand(vector<string>& args)
 				mainChar->Go(args);
 			}
 
+			else if (args[0] == "inventory")
+				mainChar->Inventory();
+
 			else
 				command = false;
 			break;
@@ -181,6 +184,12 @@ bool World::SelectCommand(vector<string>& args)
 
 			else if (args[0] == "go")
 				mainChar->Go(args);
+
+			else if (args[0] == "take")
+				mainChar->Take(args);
+
+			else if (args[0] == "drop")
+				mainChar->Drop(args);
 
 			else
 				command = false;
@@ -195,7 +204,14 @@ bool World::SelectCommand(vector<string>& args)
 
 		case 4:
 		{
-			command = false;
+			if (args[0] == "take")
+				mainChar->Take(args);
+
+			else if (args[0] == "drop")
+				mainChar->Drop(args);
+
+			else
+				command = false;
 			break;
 		}
 
