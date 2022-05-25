@@ -1,6 +1,8 @@
 #include "room.h"
 #include <iostream>
 #include "exit.h"
+#include "item.h"
+#include "creature.h"
 
 Room::Room(const char* name, const char* desc) :
 	Entity(name, desc, NULL)
@@ -24,7 +26,8 @@ void Room::Look() const
 	{
 		if (obj->type == EntityType::EXIT)
 		{
-
+			Exit* exit = (Exit*)obj;
+			cout << "To the " << exit->GetNameDirection(this) << ", a " << exit->GetDestinationFromRoom(this)->name << " stands.\n";
 		}
 	}
 
@@ -33,7 +36,8 @@ void Room::Look() const
 	{
 		if (obj->type == EntityType::ITEM)
 		{
-
+			Item* item = (Item*)obj;
+			cout << "You can see an item on the floor, a " << item->name << "\n";
 		}
 	}
 
@@ -42,7 +46,13 @@ void Room::Look() const
 	{
 		if (obj->type == EntityType::CREATURE)
 		{
+			Creature* creature = (Creature*)obj;
+			cout << "A person stands there, the " << creature->name;
 
+			if (!creature->IsAlive())
+				cout << ", but it's dead...\n";
+			else
+				cout << "\n";
 		}
 	}
 }

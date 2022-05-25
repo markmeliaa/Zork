@@ -11,6 +11,7 @@
 using namespace std;
 
 class Entity;
+class Player;
 
 class World
 {
@@ -25,6 +26,7 @@ public:
 private:
 	clock_t baseClock;
 	list<Entity*> worldEntities;
+	Player* mainChar;
 };
 
 #endif // !WorldClass

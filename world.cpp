@@ -5,13 +5,14 @@
 #include "exit.h"
 #include "item.h"
 #include "creature.h"
+#include "player.h"
 
 World::World()
 {
 	baseClock = clock();
 
 	// Create 5+ rooms
-	Room* mountain = new Room("Mountain", "You see huge snowed peaks near you");
+	Room* mountain = new Room("Mountain", "You see huge snowed peaks around you");
 	Room* river = new Room("River", "You hear the course of the river running");
 	Room* lake = new Room("Lake", "A small and calm lake with a pier");
 	Room* bridge = new Room("Bridge", "Thanks to this bridge you can cross the river");
@@ -26,7 +27,7 @@ World::World()
 	Exit* exit4 = new Exit("west", "east", "Wall gate", castle, bridge);
 	Exit* exit5 = new Exit("up", "down", "Large royal corridor", castle, crownRoom);
 	exit5->locked = true;
-	Exit* exit6 = new Exit("east", "west", "Sinister path", forest, castle);
+	Exit* exit6 = new Exit("west", "east", "Sinister path", forest, castle);
 
 	worldEntities.push_back(mountain);
 	worldEntities.push_back(river);
@@ -74,6 +75,11 @@ World::World()
 	worldEntities.push_back(fishingRod);
 	worldEntities.push_back(treeBranch);
 	worldEntities.push_back(royalShield);
+
+	// Create the Player
+	mainChar = new Player("Hero", "The one chosen by the legend", mountain);
+	mainChar->health = 20;
+	worldEntities.push_back(mainChar);
 }
 
 World::~World()
@@ -120,6 +126,83 @@ bool World::SelectCommand(vector<string>& args)
 	bool command = true;
 
 	// Commands that can be performed
+	switch (args.size())
+	{
+		case 1:
+		{
+			if (args[0] == "look" || args[0] == "l")
+				mainChar->Look(args);
+
+			else if (args[0] == "north" || args[0] == "n")
+			{
+				args.push_back("north");
+				mainChar->Go(args);
+			}
+
+			else if (args[0] == "east" || args[0] == "e")
+			{
+				args.push_back("east");
+				mainChar->Go(args);
+			}
+
+			else if (args[0] == "south" || args[0] == "s")
+			{
+				args.push_back("south");
+				mainChar->Go(args);
+			}
+
+			else if (args[0] == "west" || args[0] == "w")
+			{
+				args.push_back("west");
+				mainChar->Go(args);
+			}
+
+			else if (args[0] == "down" || args[0] == "d")
+			{
+				args.push_back("down");
+				mainChar->Go(args);
+			}
+
+			else if (args[0] == "up" || args[0] == "u")
+			{
+				args.push_back("up");
+				mainChar->Go(args);
+			}
+
+			else
+				command = false;
+			break;
+		}
+
+		case 2: 
+		{
+			if (args[0] == "look" || args[0] == "l")
+				mainChar->Look(args);
+
+			else if (args[0] == "go")
+				mainChar->Go(args);
+
+			else
+				command = false;
+			break;
+		}
+
+		case 3:
+		{
+			command = false;
+			break;
+		}
+
+		case 4:
+		{
+			command = false;
+			break;
+		}
+
+		default:
+			command = false;
+			break;
+	}
 
 	return command;
 }

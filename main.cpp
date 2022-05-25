@@ -21,6 +21,8 @@ int main()
 	World newWorld;
 
 	cout << BOLDYELLOW_ "WELCOME to Marc's personal ZORK!" ENDCOLORING << endl;
+	args.push_back("l");
+	cout << ">>";
 
 	while (1) 
 	{
@@ -72,6 +74,7 @@ int main()
 		{
 			player_input = "";
 			args.clear();
+			cout << ">>";
 		}
 	}
 
