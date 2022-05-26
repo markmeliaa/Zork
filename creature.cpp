@@ -3,6 +3,7 @@
 #include "exit.h"
 #include "room.h"
 #include "item.h"
+#include "general.h"
 
 Creature::Creature(const char* name, const char* desc, Room* room) :
 	Entity(name, desc, (Entity*)room)
@@ -13,6 +14,7 @@ Creature::Creature(const char* name, const char* desc, Room* room) :
 	weaponEquiped = NULL;
 	armourEquiped = NULL;
 	fightTarget = NULL;
+	battleTurn = 1;
 }
 
 Creature::~Creature()
@@ -25,6 +27,19 @@ void Creature::Update()
 	if (fightTarget != NULL)
 	{
 		// Real-time combat
+
+		if (thisParent->FindObject(fightTarget) == true && IsAlive() && fightTarget->IsAlive())
+		{
+			cout << "------------------ TURN " << battleTurn << " ------------------\n";
+			Attacking();
+			battleTurn++;
+		}
+
+		else
+		{
+			fightTarget = NULL;
+			battleTurn = 1;
+		}
 	}
 }
 
@@ -310,4 +325,93 @@ void Creature::Stats() const
 	{
 		cout << "Defense values: Min Defense: " << min_protec << ", Max Defense: " << max_protec << ".\n";
 	}
+}
+
+bool Creature::Loot(const vector<string>& args)
+{
+	Creature* creat = (Creature*)thisParent->FindObject(args[1], EntityType::CREATURE);
+
+	if (creat == NULL)
+		return false;
+
+	if (creat->IsAlive())
+		return false;
+
+	list<Entity*> enemyInventory;
+	creat->FindAllByType(EntityType::ITEM, enemyInventory);
+
+	if (enemyInventory.size() > 0)
+	{
+		cout << name << " starts looting the dead body of the " << creat->name << ":\n";
+
+		for each (Entity * obj in enemyInventory)
+		{
+			Item* item = (Item*)obj;
+			item->ChangeParentObject(this);
+			//cout << item->name << " added to " << name << "'s inventory.";
+		}
+	}
+
+	else
+	{
+		cout << name << " found nothing on " << creat->name << "'s body.\n";
+	}
+
+	return true;
+}
+
+bool Creature::Attack(const vector<string>& args)
+{
+	Creature* creat = (Creature*)thisParent->FindObject(args[1], EntityType::CREATURE);
+
+	if (creat == NULL)
+		return false;
+
+	fightTarget = creat;
+	cout << name << " starts attacking " << creat->name << ".\n";
+
+	return true;
+}
+
+int Creature::Attacking()
+{
+	if (!IsAlive() || !fightTarget->IsAlive())
+	{
+		fightTarget = fightTarget->fightTarget = NULL;
+		return false;
+	}
+
+	int attackVal = weaponEquiped ? weaponEquiped->GetValue() : Random(min_dmg, max_dmg);
+
+	if (PlayerInRoom())
+		cout << name << " attacks " << fightTarget->name << " and inflicts " << attackVal << " points of damage.\n";
+
+	fightTarget->Defending(attackVal);
+
+	if (fightTarget->fightTarget == NULL)
+		fightTarget->fightTarget = this;
+
+	return attackVal;
+}
+
+int Creature::Defending(const int& damage)
+{
+	int defenseVal = armourEquiped ? armourEquiped->GetValue() : Random(min_protec, max_protec);
+	cout << name << " defends himself with " << defenseVal << " points of protection.\n";
+
+	int finalDamage = damage - defenseVal;
+	if (finalDamage < 0)
+		finalDamage = 0;
+
+	health -= finalDamage;
+	if (health < 0)
+		health = 0;
+
+	if (PlayerInRoom())
+		cout << name << " finally gets attacked with " << finalDamage << " points of damage.\n";
+
+	if (!IsAlive())
+		Die();
+
+	return finalDamage;
 }

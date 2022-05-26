@@ -26,12 +26,11 @@ public:
 	virtual bool Lock(const vector<string>& args);
 	virtual bool Unlock(const vector<string>& args);
 
-	/*
 	virtual bool Attack(const vector<string>& args);
 	virtual int Attacking();
 	virtual int Defending(const int& damage);
 	virtual bool Loot(const vector<string>& args);
-	*/
+
 	virtual void Die() const;
 	virtual void Stats() const;
 
@@ -48,6 +47,7 @@ public:
 	Creature* fightTarget;
 	Item* weaponEquiped;
 	Item* armourEquiped;
+	int battleTurn;
 };
 
 #endif // !CreatureClass

@@ -6,6 +6,7 @@
 #include "item.h"
 #include "creature.h"
 #include "player.h"
+#include <functional>
 
 World::World()
 {
@@ -54,7 +55,7 @@ World::World()
 	worldEntities.push_back(fisherman);
 
 	// Create the key for the castle
-	Item* castleKey = new Item("key", "A golden key, could be used to open something important", bridge);
+	Item* castleKey = new Item("key", "A golden key, could be used to open something important", king);
 	exit5->key = castleKey;
 
 	// Create the Items
@@ -202,6 +203,12 @@ bool World::SelectCommand(vector<string>& args)
 
 			else if (args[0] == "examine")
 				mainChar->Examine(args);
+
+			else if (args[0] == "loot")
+				mainChar->Loot(args);
+
+			else if (args[0] == "attack")
+				mainChar->Attack(args);
 
 			else
 				command = false;

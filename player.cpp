@@ -377,3 +377,61 @@ bool Player::Examine(const vector<string>& args)
 
 	return true;
 }
+
+bool Player::Loot(const vector<string>& args)
+{
+	if (!IsAlive())
+		return false;
+
+	Creature* creat = (Creature*)thisParent->FindObject(args[1], EntityType::CREATURE);
+
+	if (creat == NULL)
+	{
+		cout << "That enemy is not in this room now.\n";
+		return false;
+	}
+
+	if (creat->IsAlive())
+	{
+		cout << "The enemy is still alive, you have to kill it first.\n";
+		return false;
+	}
+
+	list<Entity*> enemyInventory;
+	creat->FindAllByType(EntityType::ITEM, enemyInventory);
+
+	if (enemyInventory.size() > 0)
+	{
+		cout << "You loot the dead body of the " << creat->name << ":\n";
+
+		for each (Entity* obj in enemyInventory)
+		{
+			Item* item = (Item*) obj;
+			item->ChangeParentObject(this);
+			cout << item->name << " added to your inventory.\n";
+		}
+	}
+
+	else
+	{
+		cout << "There was nothing on " << creat->name << "'s body.\n";
+	}
+
+	return true;
+}
+
+bool Player::Attack(const vector<string>& args)
+{
+	Creature* creat = (Creature*)thisParent->FindObject(args[1], EntityType::CREATURE);
+
+	if (creat == NULL)
+	{
+		cout << "That enemy is not in the room right now.\n";
+		return false;
+	}
+
+	fightTarget = creat;
+	cout << "You start attacking " << creat->name << ".\n";
+
+	return true;
+}
