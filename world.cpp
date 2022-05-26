@@ -216,6 +216,12 @@ bool World::SelectCommand(vector<string>& args)
 			else if (args[0] == "drop" || args[0] == "throw")
 				mainChar->Drop(args);
 
+			else if (args[0] == "lock")
+				mainChar->Lock(args);
+
+			else if (args[0] == "unlock")
+				mainChar->Unlock(args);
+
 			else
 				command = false;
 			break;

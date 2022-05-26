@@ -280,3 +280,81 @@ bool Player::Unequip(const vector<string>& args)
 	cout << "You unequip " << item->name << " successfully.\n";
 	return true;
 }
+
+bool Player::Lock(const vector<string>& args)
+{
+	if (!IsAlive())
+		return false;
+
+	Exit* exit = GetRoom()->GetThisExit(args[1]);
+
+	if (exit == NULL)
+	{
+		cout << "There is not an exit in that direction.\n";
+		return false;
+	}
+
+	if (exit->locked == true)
+	{
+		cout << "That exit is already locked.\n";
+		return false;
+	}
+
+	Item* key = (Item*)FindObject(args[3], EntityType::ITEM);
+
+	if (key == NULL)
+	{
+		cout << "You do not have that in your inventory.\n";
+		return false;
+	}
+
+	if (key != exit->key)
+	{
+		cout << "That key is not for this exit.\n";
+		return false;
+	}
+
+	cout << "You locked " << exit->name << " with " << key->name << ".\n";
+	exit->locked = true;
+
+	return true;
+}
+
+bool Player::Unlock(const vector<string>& args)
+{
+	if (!IsAlive())
+		return false;
+
+	Exit* exit = GetRoom()->GetThisExit(args[1]);
+
+	if (exit == NULL)
+	{
+		cout << "There is not an exit in that direction.\n";
+		return false;
+	}
+
+	if (exit->locked == false)
+	{
+		cout << "That exit is already unlocked.\n";
+		return false;
+	}
+
+	Item* key = (Item*)FindObject(args[3], EntityType::ITEM);
+
+	if (key == NULL)
+	{
+		cout << "You do not have that in your inventory.\n";
+		return false;
+	}
+
+	if (key != exit->key)
+	{
+		cout << "That key is not for this exit.\n";
+		return false;
+	}
+
+	cout << "You unlocked " << exit->name << " with " << key->name << ".\n";
+	exit->locked = false;
+
+	return true;
+}

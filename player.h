@@ -13,14 +13,18 @@ public:
 
 	bool Go(const vector<string>& args);
 	void Look(const vector<string>& args) const;
-	virtual void Inventory() const;
-	virtual bool Take(const vector<string>& args);
-	virtual bool Drop(const vector<string>& args);
-	virtual bool Equip(const vector<string>& args);
-	virtual bool Unequip(const vector<string>& args);
+	void Inventory() const;
+	bool Take(const vector<string>& args);
+	bool Drop(const vector<string>& args);
+	bool Equip(const vector<string>& args);
+	bool Unequip(const vector<string>& args);
+	bool Lock(const vector<string>& args);
+	bool Unlock(const vector<string>& args);
 	/*
-	virtual bool Lock(const vector<string>& args);
-	virtual bool Unlock(const vector<string>& args);
+	bool Examine(const vector<string>& args);
+	bool Loot(const vector<string>& args);
+
+	bool Attack(const vector<string>& args);
 	*/
 };
 
