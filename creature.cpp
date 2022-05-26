@@ -111,7 +111,7 @@ void Creature::Inventory() const
 		return;
 	}
 
-	cout << "The character " << name << " owns:\n";
+	cout << "The " << name << " owns:\n";
 	for each (Entity * item in carriedItems)
 	{
 		if (item == weaponEquiped)
@@ -274,4 +274,40 @@ bool Creature::PlayerInRoom() const
 bool Creature::IsAlive() const
 {
 	return health > 0;
+}
+
+void Creature::Die() const
+{
+	if (PlayerInRoom())
+		cout << "The " << name << " died.\n";
+}
+
+void Creature::Stats() const
+{
+	//cout << name << "\n";
+	cout << "Health: " << health << "\n";
+	
+	if (weaponEquiped != NULL) 
+	{
+		cout << "Attack values: (" << weaponEquiped->name
+			<< "), Min Attack: " << weaponEquiped->min_val
+			<< ", Max Attack: " << weaponEquiped->max_val << ".\n";
+	}
+
+	else
+	{
+		cout << "Attack values: Min Attack: " << min_dmg << ", Max Attack: " << max_dmg << ".\n";
+	}
+
+	if (armourEquiped != NULL)
+	{
+		cout << "Defense values: (" << armourEquiped->name
+			<< "), Min Defense: " << armourEquiped->min_val
+			<< ", Max Defense: " << armourEquiped->max_val << ".\n";
+	}
+
+	else
+	{
+		cout << "Defense values: Min Defense: " << min_protec << ", Max Defense: " << max_protec << ".\n";
+	}
 }

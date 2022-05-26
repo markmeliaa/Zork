@@ -172,6 +172,9 @@ bool World::SelectCommand(vector<string>& args)
 			else if (args[0] == "inventory")
 				mainChar->Inventory();
 
+			else if (args[0] == "stats")
+				mainChar->Stats();
+
 			else
 				command = false;
 			break;
@@ -196,6 +199,9 @@ bool World::SelectCommand(vector<string>& args)
 
 			else if (args[0] == "unequip")
 				mainChar->Unequip(args);
+
+			else if (args[0] == "examine")
+				mainChar->Examine(args);
 
 			else
 				command = false;

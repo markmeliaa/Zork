@@ -20,11 +20,10 @@ public:
 	bool Unequip(const vector<string>& args);
 	bool Lock(const vector<string>& args);
 	bool Unlock(const vector<string>& args);
-	/*
 	bool Examine(const vector<string>& args);
-	bool Loot(const vector<string>& args);
-
+	/*
 	bool Attack(const vector<string>& args);
+	bool Loot(const vector<string>& args);
 	*/
 };
 

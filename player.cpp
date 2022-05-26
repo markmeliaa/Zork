@@ -358,3 +358,22 @@ bool Player::Unlock(const vector<string>& args)
 
 	return true;
 }
+
+bool Player::Examine(const vector<string>& args)
+{
+	if (!IsAlive())
+		return false;
+
+	Creature* creat = (Creature*)thisParent->FindObject(args[1], EntityType::CREATURE);
+
+	if (creat == NULL)
+	{
+		cout << "That creature is not in this room now.\n";
+		return false;
+	}
+
+	creat->Inventory();
+	creat->Stats();
+
+	return true;
+}
