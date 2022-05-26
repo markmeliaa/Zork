@@ -9,7 +9,8 @@ enum class ItemType
 {
 	COMMON,
 	ATTACK,
-	DEFENSE
+	DEFENSE,
+	CONTAINER
 };
 
 class Item : public Entity

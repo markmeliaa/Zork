@@ -16,9 +16,9 @@ public:
 	virtual void Inventory() const;
 	virtual bool Take(const vector<string>& args);
 	virtual bool Drop(const vector<string>& args);
-	/*
 	virtual bool Equip(const vector<string>& args);
 	virtual bool Unequip(const vector<string>& args);
+	/*
 	virtual bool Lock(const vector<string>& args);
 	virtual bool Unlock(const vector<string>& args);
 	*/

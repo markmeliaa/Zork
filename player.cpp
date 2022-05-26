@@ -17,6 +17,9 @@ Player::~Player()
 
 bool Player::Go(const vector<string>& args)
 {
+	if (!IsAlive())
+		return false;
+
 	Exit* exit = GetRoom()->GetThisExit(args[1]);
 
 	if (exit == NULL)
@@ -42,6 +45,9 @@ bool Player::Go(const vector<string>& args)
 
 void Player::Look(const vector<string>& args) const
 {
+	if (!IsAlive())
+		return;
+
 	if (args.size() > 1)
 	{
 		for each (Entity * object in thisParent->thisChildren)
@@ -68,6 +74,9 @@ void Player::Look(const vector<string>& args) const
 
 void Player::Inventory() const
 {
+	if (!IsAlive())
+		return;
+
 	list<Entity*> inventoryItems;
 	FindAllByType(EntityType::ITEM, inventoryItems);
 
@@ -85,6 +94,7 @@ void Player::Inventory() const
 
 		else if ((Item*)item == armourEquiped)
 			cout << item->name << " equiped as armour\n";
+
 		else
 			cout << item->name << "\n";
 	}
@@ -92,6 +102,9 @@ void Player::Inventory() const
 
 bool Player::Take(const vector<string>& args)
 {
+	if (!IsAlive())
+		return false;
+
 	if (args.size() == 4)
 	{
 		// Pick something inside the room
@@ -104,6 +117,12 @@ bool Player::Take(const vector<string>& args)
 		if (item == NULL)
 		{
 			cout << "That object could not be found in either the room or the inventory, try again.\n";
+			return false;
+		}
+
+		if (item->itemType != ItemType::CONTAINER)
+		{
+			cout << item->name << " is not a container, there can't be anything inside it.\n";
 			return false;
 		}
 
@@ -142,6 +161,9 @@ bool Player::Take(const vector<string>& args)
 
 bool Player::Drop(const vector<string>& args)
 {
+	if (!IsAlive())
+		return false;
+
 	if (args.size() == 4)
 	{
 		Item* item = (Item*)FindObject(args[1], EntityType::ITEM);
@@ -160,6 +182,12 @@ bool Player::Drop(const vector<string>& args)
 		if (destiny == NULL) 
 		{
 			cout << "The item where you try to deploy " << item->name << " was not found.\n";
+			return false;
+		}
+
+		if (destiny->itemType != ItemType::CONTAINER) 
+		{
+			cout << "You can't throw anything inside " << destiny->name << ", it is not a container.\n";
 			return false;
 		}
 
@@ -186,4 +214,69 @@ bool Player::Drop(const vector<string>& args)
 	}
 
 	return false;
+}
+
+bool Player::Equip(const vector<string>& args)
+{
+	if (!IsAlive())
+		return false;
+
+	Item* item = (Item*)FindObject(args[1], EntityType::ITEM);
+
+	if (item == NULL)
+	{
+		cout << "You do not have that item, so you can't equip it.\n";
+		return false;
+	}
+
+	switch (item->itemType)
+	{
+		case ItemType::ATTACK:
+			weaponEquiped = item;
+			break;
+
+		case ItemType::DEFENSE:
+			armourEquiped = item;
+			break;
+
+		default:
+			cout << "That is not an equipable item.\n";
+			return false;
+	}
+
+	cout << "You equiped " + item->name << " successfully.\n";
+	return true;
+}
+
+bool Player::Unequip(const vector<string>& args)
+{
+	if (!IsAlive())
+		return false;
+
+	Item* item = (Item*)FindObject(args[1], EntityType::ITEM);
+
+	if (item == NULL)
+	{
+		cout << "You do not have that item, so you can't unequip it.\n";
+		return false;
+	}
+
+	if (item == weaponEquiped)
+	{
+		weaponEquiped = NULL;
+	}
+
+	else if (item == armourEquiped)
+	{
+		armourEquiped = NULL;
+	}
+
+	else
+	{
+		cout << "You do not have that item equipped.\n";
+		return false;
+	}
+
+	cout << "You unequip " << item->name << " successfully.\n";
+	return true;
 }

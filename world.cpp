@@ -185,11 +185,17 @@ bool World::SelectCommand(vector<string>& args)
 			else if (args[0] == "go")
 				mainChar->Go(args);
 
-			else if (args[0] == "take")
+			else if (args[0] == "take" || args[0] == "grab")
 				mainChar->Take(args);
 
-			else if (args[0] == "drop")
+			else if (args[0] == "drop" || args[0] == "throw")
 				mainChar->Drop(args);
+
+			else if (args[0] == "equip")
+				mainChar->Equip(args);
+
+			else if (args[0] == "unequip")
+				mainChar->Unequip(args);
 
 			else
 				command = false;
@@ -204,10 +210,10 @@ bool World::SelectCommand(vector<string>& args)
 
 		case 4:
 		{
-			if (args[0] == "take")
+			if (args[0] == "take" || args[0] == "grab")
 				mainChar->Take(args);
 
-			else if (args[0] == "drop")
+			else if (args[0] == "drop" || args[0] == "throw")
 				mainChar->Drop(args);
 
 			else
