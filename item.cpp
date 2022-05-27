@@ -8,6 +8,7 @@ Item::Item(const char* name, const char* desc, Entity* parent, ItemType itemType
 	type = EntityType::ITEM;
 	min_val = 0;
 	max_val = 0;
+	healthRestored = 0;
 }
 
 Item::~Item()

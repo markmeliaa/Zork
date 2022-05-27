@@ -116,7 +116,7 @@ bool Player::Take(const vector<string>& args)
 
 		if (item == NULL)
 		{
-			cout << "That object could not be found in either the room or the inventory, try again.\n";
+			cout << args[3] << " could not be found in either the room or the inventory, try again.\n";
 			return false;
 		}
 
@@ -130,7 +130,7 @@ bool Player::Take(const vector<string>& args)
 
 		if (item2 == NULL)
 		{
-			cout << "That object could not be found inside " << item->name << ".\n";
+			cout << args[1] << " could not be found inside " << item->name << ".\n";
 			return false;
 		}
 
@@ -147,6 +147,12 @@ bool Player::Take(const vector<string>& args)
 		if (item == NULL)
 		{
 			cout << "That object could not be found in the room.\n";
+			return false;
+		}
+
+		if (item->itemType == ItemType::FOOD)
+		{
+			cout << "You need a rod to catch the " << item->name << ".\n";
 			return false;
 		}
 
@@ -422,6 +428,9 @@ bool Player::Loot(const vector<string>& args)
 
 bool Player::Attack(const vector<string>& args)
 {
+	if (!IsAlive())
+		return false;
+
 	Creature* creat = (Creature*)thisParent->FindObject(args[1], EntityType::CREATURE);
 
 	if (creat == NULL)
@@ -434,4 +443,58 @@ bool Player::Attack(const vector<string>& args)
 	cout << "You start attacking " << creat->name << ".\n";
 
 	return true;
+}
+
+bool Player::Fish(const vector<string>& args)
+{
+	if (!IsAlive())
+		return false;
+
+	if (args.size() == 2)
+	{
+		cout << "You need an object in order to fish.\n";
+		return false;
+	}
+
+	else if (args.size() == 4)
+	{
+
+		Item* fish = (Item*)thisParent->FindObject(args[1], EntityType::ITEM);
+
+		if (fish == NULL)
+		{
+			cout << args[1] << " is not in the room now.\n";
+			return false;
+		}
+
+		if (fish->itemType != ItemType::FOOD)
+		{
+			cout << "You only can fish a fish, you can not fish that.\n";
+			return false;
+		}
+
+		Item* rod = (Item*)FindObject(args[3], EntityType::ITEM);
+
+		if (rod == NULL)
+		{
+			cout << args[3] << " is not in your inventory right now.\n";
+			return false;
+		}
+
+		if (rod->itemType != ItemType::FISH)
+		{
+			cout << "You can't use " << rod->name << " to fish.\n";
+			return false;
+		}
+
+		cout << "You fished " << fish->name << " with " << rod->name << ".\n";
+		fish->ChangeParentObject(this);
+	}
+
+	return true;
+}
+
+bool Player::Eat(const vector<string>& args)
+{
+
 }

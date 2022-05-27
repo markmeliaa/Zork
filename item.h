@@ -10,7 +10,9 @@ enum class ItemType
 	COMMON,
 	ATTACK,
 	DEFENSE,
-	CONTAINER
+	CONTAINER,
+	FISH,
+	FOOD
 };
 
 class Item : public Entity
@@ -25,6 +27,7 @@ public:
 	int min_val;
 	int max_val;
 	ItemType itemType;
+	int healthRestored;
 };
 
 #endif // !ItemClass

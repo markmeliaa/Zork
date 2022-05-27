@@ -23,6 +23,9 @@ public:
 	bool Examine(const vector<string>& args);
 	bool Attack(const vector<string>& args);
 	bool Loot(const vector<string>& args);
+
+	bool Fish(const vector<string>& args);
+	bool Eat(const vector<string>& args);
 };
 
 #endif // !PlayerClass

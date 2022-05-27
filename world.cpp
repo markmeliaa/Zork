@@ -46,10 +46,13 @@ World::World()
 	worldEntities.push_back(exit6);
 
 	// Create the Creatures
-	Creature* king = new Creature("king", "The abusive monarch of this realm", castle);
+	Creature* king = new Creature("king", "The abusive and corrupted monarch of this realm", castle);
 	king->health = 15;
+
 	Creature* fisherman = new Creature("fisherman", "A young guy that prevents you from fishing", lake);
 	fisherman->health = 10;
+	fisherman->min_dmg = 1;
+	fisherman->max_dmg = 2;
 
 	worldEntities.push_back(king);
 	worldEntities.push_back(fisherman);
@@ -59,23 +62,34 @@ World::World()
 	exit5->key = castleKey;
 
 	// Create the Items
-	Item* rod = new Item("rod", "Made for fishing small fish", fisherman, ItemType::ATTACK);
-	rod->min_val = 2;
-	rod->max_val = 3;
-	fisherman->AutoEquip();
+	Item* rod = new Item("rod", "Made for fishing small fish", fisherman, ItemType::FISH);
+	worldEntities.push_back(rod);
 
 	Item* branch = new Item("branch", "A long, sharp branch that fell from a tree", mountain, ItemType::ATTACK);
 	branch->min_val = 1;
 	branch->max_val = 4;
 
+	Item* sword = new Item("sword", "The legendary blade of the royal family", king, ItemType::ATTACK);
+	sword->min_val = 2;
+	sword->min_val = 3;
+
 	Item* shield = new Item("shield", "A shield with the royal family logo", king, ItemType::DEFENSE);
 	shield->min_val = 1;
-	shield->max_val = 3;
+	shield->max_val = 2;
 	king->AutoEquip();
 
-	worldEntities.push_back(rod);
 	worldEntities.push_back(branch);
+	worldEntities.push_back(sword);
 	worldEntities.push_back(shield);
+
+	Item* bucket = new Item("bucket", "A container to store fish or anything you want", lake, ItemType::CONTAINER);
+	Item* crown = new Item("crown", "The treasure of the royal family", crownRoom);
+	Item* goldfish = new Item("goldfish", "It will sure give you an HP boost if you eat it", lake, ItemType::FOOD);
+	goldfish->healthRestored = 5;
+
+	worldEntities.push_back(bucket);
+	worldEntities.push_back(crown);
+	worldEntities.push_back(goldfish);
 
 	// Create the Player
 	mainChar = new Player("Hero", "The one chosen by the legend", mountain);
@@ -210,6 +224,12 @@ bool World::SelectCommand(vector<string>& args)
 			else if (args[0] == "attack")
 				mainChar->Attack(args);
 
+			else if (args[0] == "fish")
+				mainChar->Fish(args);
+
+			else if (args[0] == "eat")
+				mainChar->Eat(args);
+
 			else
 				command = false;
 			break;
@@ -234,6 +254,9 @@ bool World::SelectCommand(vector<string>& args)
 
 			else if (args[0] == "unlock")
 				mainChar->Unlock(args);
+
+			else if (args[0] == "fish")
+				mainChar->Fish(args);
 
 			else
 				command = false;

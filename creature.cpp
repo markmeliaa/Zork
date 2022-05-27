@@ -43,78 +43,6 @@ void Creature::Update()
 	}
 }
 
-void Creature::Look() const
-{
-	if (IsAlive())
-	{
-		cout << "This creature name is: " << name << "\n";
-		cout << desc << "\n";
-	}
-
-	else
-	{
-		cout << "Here lies the corpse of: " << name << "\n";
-		cout << desc << "\n";
-	}
-}
-
-bool Creature::Go(const vector<string>& args)
-{
-	if (!IsAlive())
-		return false;
-
-	Exit* exit = GetRoom()->GetThisExit(args[1]);
-
-	// There is no exit
-	if (exit == NULL)
-		return false;
-
-	if (PlayerInRoom())
-		cout << "The character " << name << " goes to " << args[1] << "\n";
-
-	ChangeParentObject(exit->GetDestinationFromRoom((Room*)thisParent));
-	return true;
-}
-
-bool Creature::Take(const vector<string>& args)
-{
-	if (!IsAlive())
-		return false;
-
-	// Pick up an item from a room
-	Item* item = (Item*)thisParent->FindObject(args[1], EntityType::ITEM);
-
-	if (args.size() > 1)
-	{
-		// Or pick up an item from an item in the inventory
-		if (item == NULL)
-			item = (Item*)FindObject(args[1], EntityType::ITEM);
-
-		if (item == NULL)
-			return false;
-
-		Item* item2 = (Item*)item->FindObject(args[3], EntityType::ITEM);
-
-		if (item2 == NULL)
-			return false;
-
-		if (PlayerInRoom())
-			cout << "The character " << name << " looks into " << item->name << ".\n";
-
-		item = item2;
-	}
-
-	if (item == NULL)
-		return false;
-
-	if (PlayerInRoom())
-		cout << "The character " << name << " takes " << item->name << ".\n";
-
-	item->ChangeParentObject(this);
-
-	return true;
-}
-
 void Creature::Inventory() const
 {
 	list<Entity*> carriedItems;
@@ -138,24 +66,6 @@ void Creature::Inventory() const
 	}
 }
 
-bool Creature::Drop(const vector<string>& args)
-{
-	if (!IsAlive())
-		return false;
-
-	Item* item = (Item*)FindObject(args[1], EntityType::ITEM);
-
-	if (item == NULL)
-		return false;
-
-	if (PlayerInRoom())
-		cout << "The character " << name << " drops " << item->name << "\n";
-
-	item->ChangeParentObject(thisParent);
-
-	return true;
-}
-
 bool Creature::AutoEquip()
 {
 	if (!IsAlive())
@@ -174,105 +84,6 @@ bool Creature::AutoEquip()
 			armourEquiped = realItem;
 	}
 
-	return true;
-}
-
-bool Creature::Equip(const vector<string>& args)
-{
-	if (!IsAlive())
-		return false;
-
-	Item* item = (Item*)FindObject(args[1], EntityType::ITEM);
-
-	if (item == NULL)
-		return false;
-
-	switch (item->itemType)
-	{
-		case ItemType::ATTACK:
-			weaponEquiped = item;
-			break;
-
-		case ItemType::DEFENSE:
-			armourEquiped = item;
-			break;
-
-		default:
-			return false;
-	}
-
-	if (PlayerInRoom())
-		cout << "The character " << name << " equips " << item->name << ".\n";
-
-	return true;
-}
-
-bool Creature::Unequip(const vector<string>& args)
-{
-	if (!IsAlive())
-		return false;
-
-	Item* item = (Item*)FindObject(args[1], EntityType::ITEM);
-
-	if (item == NULL)
-		return false;
-
-	if (item == weaponEquiped)
-		weaponEquiped = NULL;
-
-	else if (item == armourEquiped)
-		armourEquiped = NULL;
-
-	else
-		return false;
-
-	if (PlayerInRoom())
-		cout << "The character " << name << " unequips " << item->name << ".\n";
-
-	return true;
-}
-
-bool Creature::Lock(const vector<string>& args)
-{
-	if (!IsAlive())
-		return false;
-
-	Exit* exit = GetRoom()->GetThisExit(args[1]);
-
-	if (exit == NULL || exit->locked == true)
-		return false;
-
-	Item* item = (Item*)FindObject(args[3], EntityType::ITEM);
-
-	if (exit == NULL || exit->key != item)
-		return false;
-
-	if (PlayerInRoom())
-		cout << "The character " << name << " locks " << exit->GetNameDirection((Room*)thisParent) << "\n";
-
-	exit->locked = true;
-	return true;
-}
-
-bool Creature::Unlock(const vector<string>& args)
-{
-	if (!IsAlive())
-		return false;
-
-	Exit* exit = GetRoom()->GetThisExit(args[1]);
-
-	if (exit == NULL || exit->locked == true)
-		return false;
-
-	Item* item = (Item*)FindObject(args[3], EntityType::ITEM);
-
-	if (exit == NULL || exit->key != item)
-		return false;
-
-	if (PlayerInRoom())
-		cout << "The character " << name << " unlocks " << exit->GetNameDirection((Room*)thisParent) << "\n";
-
-	exit->locked = false;
 	return true;
 }
 
@@ -325,39 +136,6 @@ void Creature::Stats() const
 	{
 		cout << "Defense values: Min Defense: " << min_protec << ", Max Defense: " << max_protec << ".\n";
 	}
-}
-
-bool Creature::Loot(const vector<string>& args)
-{
-	Creature* creat = (Creature*)thisParent->FindObject(args[1], EntityType::CREATURE);
-
-	if (creat == NULL)
-		return false;
-
-	if (creat->IsAlive())
-		return false;
-
-	list<Entity*> enemyInventory;
-	creat->FindAllByType(EntityType::ITEM, enemyInventory);
-
-	if (enemyInventory.size() > 0)
-	{
-		cout << name << " starts looting the dead body of the " << creat->name << ":\n";
-
-		for each (Entity * obj in enemyInventory)
-		{
-			Item* item = (Item*)obj;
-			item->ChangeParentObject(this);
-			//cout << item->name << " added to " << name << "'s inventory.";
-		}
-	}
-
-	else
-	{
-		cout << name << " found nothing on " << creat->name << "'s body.\n";
-	}
-
-	return true;
 }
 
 bool Creature::Attack(const vector<string>& args)

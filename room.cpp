@@ -37,7 +37,10 @@ void Room::Look() const
 		if (obj->type == EntityType::ITEM)
 		{
 			Item* item = (Item*)obj;
-			cout << "You can see an item on the floor, a " << item->name << "\n";
+			if (item->itemType == ItemType::FOOD)
+				cout << "You can see a creture in the lake, a " << item->name << ".\n";
+			else
+				cout << "You can see an item on the floor, a " << item->name << "\n";
 		}
 	}
 
