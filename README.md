@@ -2,7 +2,7 @@
 
 My personal version of the Zork game.
 
-Here is the map of this version for anyone who would like to play.
+Here is the map of this version for anyone who would like to play, the starting position is the MOUNTAINS and in order to **WIN**, the player should reach the Crown Room, take the crown and equip it.
 
 <img src="img/ZorkDiagram.png" width="80%">
 
