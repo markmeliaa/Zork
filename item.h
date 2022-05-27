@@ -10,6 +10,7 @@ enum class ItemType
 	COMMON,
 	ATTACK,
 	DEFENSE,
+	CROWN,
 	CONTAINER,
 	FISH,
 	FOOD,

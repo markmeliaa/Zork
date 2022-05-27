@@ -83,7 +83,7 @@ World::World()
 	worldEntities.push_back(shield);
 
 	Item* bucket = new Item("bucket", "A container to store fish or anything you want", lake, ItemType::CONTAINER);
-	Item* crown = new Item("crown", "The treasure of the royal family", crownRoom);
+	Item* crown = new Item("crown", "The treasure of the royal family", crownRoom, ItemType::CROWN);
 
 	worldEntities.push_back(bucket);
 	worldEntities.push_back(crown);

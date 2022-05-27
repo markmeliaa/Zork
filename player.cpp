@@ -245,6 +245,10 @@ bool Player::Equip(const vector<string>& args)
 			armourEquiped = item;
 			break;
 
+		case ItemType::CROWN:
+			cout << "You equiped the " << item->name << ", CONGRATULATIONS! You won the game!\n";
+			return true;
+
 		default:
 			cout << "That is not an equipable item.\n";
 			return false;

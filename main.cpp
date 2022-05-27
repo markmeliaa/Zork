@@ -57,7 +57,7 @@ int main()
 				cout << "\n";
 
 				/*
-				for each (string var in args) 
+				for each (string var in args)
 				{
 					cout << "\n";
 					cout << var;
