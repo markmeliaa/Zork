@@ -12,7 +12,8 @@ enum class ItemType
 	DEFENSE,
 	CONTAINER,
 	FISH,
-	FOOD
+	FOOD,
+	FISHFOOD
 };
 
 class Item : public Entity

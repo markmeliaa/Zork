@@ -150,7 +150,7 @@ bool Player::Take(const vector<string>& args)
 			return false;
 		}
 
-		if (item->itemType == ItemType::FOOD)
+		if (item->itemType == ItemType::FISHFOOD)
 		{
 			cout << "You need a rod to catch the " << item->name << ".\n";
 			return false;
@@ -445,7 +445,7 @@ bool Player::Attack(const vector<string>& args)
 	return true;
 }
 
-bool Player::Fish(const vector<string>& args)
+bool Player::Fish(const vector<string>& args, list<Entity*>& worldEntities)
 {
 	if (!IsAlive())
 		return false;
@@ -467,7 +467,7 @@ bool Player::Fish(const vector<string>& args)
 			return false;
 		}
 
-		if (fish->itemType != ItemType::FOOD)
+		if (fish->itemType != ItemType::FISHFOOD)
 		{
 			cout << "You only can fish a fish, you can not fish that.\n";
 			return false;
@@ -488,13 +488,36 @@ bool Player::Fish(const vector<string>& args)
 		}
 
 		cout << "You fished " << fish->name << " with " << rod->name << ".\n";
+		cout << "But the " << rod->name << " broke.\n";
 		fish->ChangeParentObject(this);
+
+		worldEntities.remove(rod);
+		delete rod;
 	}
 
 	return true;
 }
 
-bool Player::Eat(const vector<string>& args)
+bool Player::Eat(const vector<string>& args, list<Entity*>& worldEntitites)
 {
+	Item* food = (Item*)FindObject(args[1], EntityType::ITEM);
 
+	if (food == NULL)
+	{
+		cout << "You do not have that item in your inventory.\n";
+		return false;
+	}
+
+	if (food->itemType != ItemType::FOOD && food->itemType != ItemType::FISHFOOD)
+	{
+		cout << "You can not eat that.\n";
+		return false;
+	}
+
+	health += food->healthRestored;
+	cout << "You ate " << food->name << ", you restored " << food->healthRestored << " points of HP.\n";
+	worldEntitites.remove(food);
+	delete food;
+
+	return true;
 }

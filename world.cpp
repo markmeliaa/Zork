@@ -52,7 +52,7 @@ World::World()
 	Creature* fisherman = new Creature("fisherman", "A young guy that prevents you from fishing", lake);
 	fisherman->health = 10;
 	fisherman->min_dmg = 1;
-	fisherman->max_dmg = 2;
+	fisherman->max_dmg = 3;
 
 	worldEntities.push_back(king);
 	worldEntities.push_back(fisherman);
@@ -71,7 +71,7 @@ World::World()
 
 	Item* sword = new Item("sword", "The legendary blade of the royal family", king, ItemType::ATTACK);
 	sword->min_val = 2;
-	sword->min_val = 3;
+	sword->max_val = 3;
 
 	Item* shield = new Item("shield", "A shield with the royal family logo", king, ItemType::DEFENSE);
 	shield->min_val = 1;
@@ -84,12 +84,17 @@ World::World()
 
 	Item* bucket = new Item("bucket", "A container to store fish or anything you want", lake, ItemType::CONTAINER);
 	Item* crown = new Item("crown", "The treasure of the royal family", crownRoom);
-	Item* goldfish = new Item("goldfish", "It will sure give you an HP boost if you eat it", lake, ItemType::FOOD);
-	goldfish->healthRestored = 5;
 
 	worldEntities.push_back(bucket);
 	worldEntities.push_back(crown);
+
+	Item* goldfish = new Item("goldfish", "It will sure give you an HP boost if you eat it", lake, ItemType::FISHFOOD);
+	goldfish->healthRestored = 5;
+	Item* apple = new Item("apple", "Healthy and yummy, eat it to significantly increase your HP", forest, ItemType::FOOD);
+	apple->healthRestored = 10;
+
 	worldEntities.push_back(goldfish);
+	worldEntities.push_back(apple);
 
 	// Create the Player
 	mainChar = new Player("Hero", "The one chosen by the legend", mountain);
@@ -225,10 +230,10 @@ bool World::SelectCommand(vector<string>& args)
 				mainChar->Attack(args);
 
 			else if (args[0] == "fish")
-				mainChar->Fish(args);
+				mainChar->Fish(args, worldEntities);
 
 			else if (args[0] == "eat")
-				mainChar->Eat(args);
+				mainChar->Eat(args, worldEntities);
 
 			else
 				command = false;
@@ -256,7 +261,7 @@ bool World::SelectCommand(vector<string>& args)
 				mainChar->Unlock(args);
 
 			else if (args[0] == "fish")
-				mainChar->Fish(args);
+				mainChar->Fish(args, worldEntities);
 
 			else
 				command = false;
